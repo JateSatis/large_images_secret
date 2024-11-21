@@ -1,0 +1,17 @@
+{
+  "name": "large_images",
+  "version": "1.0.0",
+  "description": "Express app for processing large images on the web service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Maxim Danilov",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0"
+  }
+}
