@@ -10,11 +10,11 @@ const sendImageWithTus = (filePath, serverUrl) => {
 
   const upload = new tus.Upload(fileStream, {
     endpoint: serverUrl,
-    // chunkSize: Math.ceil(stats.size / 2),
+    chunkSize: Math.ceil(stats.size / 100),
     retryDelays: [0, 1000, 3000, 5000], // Retry delays
     metadata: {
       filename: filePath.split("/").pop(),
-      filetype: "image/png", // Adjust based on the actual file type
+      filetype: "image/tif", // Adjust based on the actual file type
     },
     uploadSize: stats.size,
     onError: (error) => {
@@ -34,6 +34,6 @@ const sendImageWithTus = (filePath, serverUrl) => {
 };
 
 // Example usage
-const filePath = "./very_large_image.png"; // Path to your image file
+const filePath = "./1.tif"; // Path to your image file
 const serverUrl = "http://localhost:3000/images/upload-image"; // Tus server endpoint
 sendImageWithTus(filePath, serverUrl);
