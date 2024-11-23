@@ -1,4 +1,40 @@
-.Viewer {
-  height: 600px;
-  width: 100%;
+// .Viewer {
+//   height: 600px;
+//   width: 100%;
+// }
+
+/* Общий контейнер */
+.container {
+  display: flex;
+  flex-direction: row; /* Сайдбар слева, OpenSeadragon справа */
+  height: 100vh; /* Высота на весь экран */
+  width: 100vw; /* Ширина на весь экран */
+  overflow: hidden;
+}
+
+/* Сайдбар */
+.sidebar {
+  width: 300px; /* Ширина сайдбара */
+  background-color: #f4f4f4; /* Цвет фона */
+  border-right: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* Контейнер для миникарты */
+.minimap-container {
+  flex: 1; /* Занимает оставшееся место в сайдбаре */
+  position: relative;
+  overflow: hidden;
+  background: #eaeaea; /* Цвет фона для миникарты */
+  margin-top: 20px;
+}
+
+/* OpenSeadragon */
+#openseadragon-container {
+  flex: 1; /* Занимает оставшееся место */
+  position: relative;
+  background-color: black;
 }

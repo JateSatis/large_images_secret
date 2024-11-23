@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import OpenSeadragon from "openseadragon";
 
 type TileType = {
@@ -8,14 +8,25 @@ type TileType = {
 const OpenSeadragonViewer = (props: TileType) => {
   const { tileSource } = props;
   const viewerRef = useRef(null);
+  const minimapRef = useRef(null);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     // Инициализация OpenSeadragon
+    if (!viewerRef.current || !minimapRef.current) {
+      console.error(
+        "Не удалось найти контейнеры для OpenSeadragon или миникарты."
+      );
+      return;
+    }
     const viewer = OpenSeadragon({
-      id: "openseadragon-viewer", // ID элемента DOM для рендера
+      // id: "openseadragon-viewer", // ID элемента DOM для рендера
+      id: viewerRef.current.id,
       prefixUrl:
         // "https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.0.0/images/",
         "./src/assets/icons/",
+      // navigatorId: "minimap-navigator",
+      navigatorId: minimapRef.current.id,
       tileSources: tileSource,
       showNavigator: true,
       defaultZoomLevel: 1,
@@ -23,7 +34,6 @@ const OpenSeadragonViewer = (props: TileType) => {
         clickToZoom: true,
         scrollToZoom: true,
       },
-      drawer: "canvas", // '''
       opacity: 1, // прозрачность
       showReferenceStrip: true,
       navigationControlAnchor: 3,
@@ -55,19 +65,44 @@ const OpenSeadragonViewer = (props: TileType) => {
       },
       // collectionMode: true,
     });
-
+    console.log("OpenSeadragon инициализирован.");
+    // setIsInitialized(true);
     return () => {
       // Очистка при размонтировании
       if (viewer) viewer.destroy();
+      console.log("Уничтожение OpenSeadragon.");
     };
-  }, [tileSource]);
+
+    // const navigatorElement = viewer.navigator.element.id;
+    // console.log(navigatorElement);
+    // }, [tileSource]);
+  }, []);
+
+  useEffect(() => {
+    console.log("viewerRef:", viewerRef.current);
+    console.log("minimapRef:", minimapRef.current.id);
+  });
 
   return (
-    <div
-      id="openseadragon-viewer"
-      ref={viewerRef}
-      style={{ width: "100%", height: "600px", border: "1px solid black" }}
-    ></div>
+    // <div
+    //   id="openseadragon-viewer"
+    //   ref={viewerRef}
+    //   style={{ width: "100%", height: "600px", border: "1px solid black" }}
+    // ></div>
+    <div className="container">
+      {/* Сайдбар */}
+      <div className="sidebar">
+        <h2>Сайдбар</h2>
+        <div
+          ref={minimapRef}
+          id="custom-minimap-id"
+          className="minimap-container"
+        ></div>
+      </div>
+
+      {/* Контейнер OpenSeadragon */}
+      <div ref={viewerRef} id="openseadragon-container"></div>
+    </div>
   );
 };
 
