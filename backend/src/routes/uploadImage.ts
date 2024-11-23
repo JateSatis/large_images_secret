@@ -1,4 +1,4 @@
-import { Request, Response, Router } from "express";
+import { Router } from "express";
 import path from "path";
 import { Server, Upload } from "@tus/server";
 import { FileStore } from "@tus/file-store";
@@ -6,15 +6,13 @@ import * as dotenv from "dotenv";
 import { IncomingMessage, ServerResponse } from "http";
 import fs from "fs";
 import { S3DataSource } from "../config/s3Config";
+import { processImage } from "./processImage";
+import { downloadDzi } from "./downloadDzi";
+import { downloadTile } from "./downloadTile";
 
 dotenv.config();
 
 export const imageRouter = Router();
-
-type Metadata = {
-  filename: string;
-  filetype: string;
-};
 
 // Create a new Tus server
 const tusServer = new Server({
@@ -45,3 +43,12 @@ const tusServer = new Server({
 imageRouter.post("/upload-image", tusServer.handle.bind(tusServer));
 
 imageRouter.all("/upload-image/*", tusServer.handle.bind(tusServer));
+
+imageRouter.get("/process-image", processImage);
+
+imageRouter.get("/download-file/tiles/:fileName/:dziFileName", downloadDzi);
+
+imageRouter.get(
+  "/download-file/tiles/:fileName/:directoryName/:tileLevel/:tileName",
+  downloadTile
+);

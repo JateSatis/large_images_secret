@@ -22,6 +22,11 @@ const OpenSeadragonViewer = (props: TileType) => {
         clickToZoom: true,
         scrollToZoom: true,
       },
+      drawer: "canvas", // '''
+      opacity: 1, // прозрачность
+      showReferenceStrip: true,
+      navigationControlAnchor: 3,
+      // collectionMode: true,
     });
 
     return () => {

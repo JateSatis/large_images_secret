@@ -35,24 +35,21 @@ export class S3DataSource {
     apiVersion: "latest",
   });
 
-  private static bucketName = process.env.S3_BUCKET_NAME;
+  static bucketName = process.env.S3_BUCKET_NAME;
 
-  static generateUniqueImageName = (imageName: string) => {
+  static generateUniqueImageName = () => {
     const timestamp = new Date().getTime();
     const randomString = uuidv4().replace(/-/g, ""); // Generating a random string without dashes
-    const extension = imageName.split(".").pop(); // Extract extension from original file name
-    return `${timestamp}_${randomString}.${extension}`;
+    return `${timestamp}_${randomString}`;
   };
 
   static uploadImageToS3 = async (
-    imageName: string,
+    fileName: string,
     body: Buffer,
     contentType: string
   ) => {
-    const uniqueImageName = this.generateUniqueImageName(imageName);
-
     const params: UploadImageParams = {
-      Key: uniqueImageName,
+      Key: fileName,
       Body: body,
       ContentType: contentType,
     };
@@ -63,7 +60,18 @@ export class S3DataSource {
     });
 
     await this.s3.send(command);
-    return uniqueImageName;
+  };
+
+  static downloadFileFromS3 = async (fileKey: string) => {
+    const command = new GetObjectCommand({
+      Bucket: this.bucketName,
+      Key: fileKey,
+    });
+
+    // Get the object from S3
+    const response = await this.s3.send(command);
+
+    return response;
   };
 
   static getImageUrlFromS3 = async (imageName: string) => {
