@@ -8,13 +8,13 @@ import { Request, Response } from "express";
 dotenv.config();
 
 export const processImage = async (req: Request, res: Response) => {
-  const pathToFile = path.join(__dirname, "../very_large_image.png");
+  const pathToFile = path.join(__dirname, "../1.tif");
   await divideImageToTiles(pathToFile, "processed_image");
   res.sendStatus(200);
 };
 
 const divideImageToTiles = async (filePath: string, fileName: string) => {
-  // fileName = S3DataSource.generateUniqueImageName();
+  fileName = S3DataSource.generateUniqueImageName();
   const outputDir = path.join(__dirname, "../temp_tiles"); // Временная директория для хранения тайлов
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir);
@@ -36,10 +36,9 @@ const divideImageToTiles = async (filePath: string, fileName: string) => {
     })
     .toFile(dziFilePath);
 
-  console.log(`Тайлы и .dzi файл сгенерированы в ${outputDir}`);
-
   // Загрузка .dzi файла в S3
   const dziKey = `tiles/${fileName}/${fileName}.dzi`;
+  console.log(dziKey);
   const dziContent = fs.readFileSync(`${dziFilePath}.dzi`);
   await S3DataSource.uploadImageToS3(dziKey, dziContent, "application/xml");
 
@@ -55,7 +54,6 @@ const divideImageToTiles = async (filePath: string, fileName: string) => {
       } else {
         const tileKey = `${baseKey}/${file}`;
         const tileContent = fs.readFileSync(fullPath);
-        console.log(tileKey);
         await S3DataSource.uploadImageToS3(tileKey, tileContent, "image.jpeg");
       }
     }
@@ -67,10 +65,4 @@ const divideImageToTiles = async (filePath: string, fileName: string) => {
 
   // Очистка временной директории
   // fs.rmSync(outputDir, { recursive: true, force: true });
-
-  console.log(`Тайлы и .dzi файл загружены в S3 под путём tiles/${fileName}/`);
-  // console.log(await S3DataSource.getImageUrlFromS3(dziKey));
-
-  const publicUrl = `https://${S3DataSource.bucketName}.s3.ru-1.amazonaws.com/${dziKey}`;
-  console.log("Прямая ссылка на .dzi файл:", publicUrl);
 };

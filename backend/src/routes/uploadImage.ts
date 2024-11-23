@@ -7,6 +7,8 @@ import { IncomingMessage, ServerResponse } from "http";
 import fs from "fs";
 import { S3DataSource } from "../config/s3Config";
 import { processImage } from "./processImage";
+import { downloadDzi } from "./downloadDzi";
+import { downloadTile } from "./downloadTile";
 
 dotenv.config();
 
@@ -43,3 +45,10 @@ imageRouter.post("/upload-image", tusServer.handle.bind(tusServer));
 imageRouter.all("/upload-image/*", tusServer.handle.bind(tusServer));
 
 imageRouter.get("/process-image", processImage);
+
+imageRouter.get("/download-file/tiles/:fileName/:dziFileName", downloadDzi);
+
+imageRouter.get(
+  "/download-file/tiles/:fileName/:directoryName/:tileLevel/:tileName",
+  downloadTile
+);

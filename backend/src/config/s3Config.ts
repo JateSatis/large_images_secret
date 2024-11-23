@@ -62,6 +62,18 @@ export class S3DataSource {
     await this.s3.send(command);
   };
 
+  static downloadFileFromS3 = async (fileKey: string) => {
+    const command = new GetObjectCommand({
+      Bucket: this.bucketName,
+      Key: fileKey,
+    });
+
+    // Get the object from S3
+    const response = await this.s3.send(command);
+
+    return response;
+  };
+
   static getImageUrlFromS3 = async (imageName: string) => {
     const params: DownloadImageParams = {
       Key: imageName,
