@@ -1,6 +1,9 @@
 networks:
   dev:
 
+volumes:
+  pgdata:  # Define the pgdata volume here
+
 services:
   nginx:
     image: nginx:stable-alpine
@@ -16,14 +19,33 @@ services:
     networks:
       - dev
 
-  # backend:
-  #   build:
-  #     context: ./backend
-  #   networks:
-  #     - dev
+  backend:
+    build:
+      context: ./backend
+    networks:
+      - dev
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: "postgresql://jate_satis:6Akshn21IKBO0622@db:5432/large_images_db"
+    ports:
+      - "3000:3000"
 
   frontend:
     build:
       context: ./frontend
+    networks:
+      - dev
+
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: jate_satis
+      POSTGRES_PASSWORD: 6Akshn21IKBO0622
+      POSTGRES_DB: large_images_db
+    ports:
+      - "5432:5432"
     networks:
       - dev
