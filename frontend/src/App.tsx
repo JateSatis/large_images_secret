@@ -1,5 +1,5 @@
 import { Button, Input } from "antd";
-import UploadButton from "./UploadButton";
+
 import OpenSeadragonViewer from "./Viewer";
 import { useState } from "react";
 
@@ -30,7 +30,6 @@ function App() {
         Submit
       </Button>
       <OpenSeadragonViewer tileSource={tileSource} />
-      <UploadButton />
     </div>
   );
 }
