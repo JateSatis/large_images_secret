@@ -22,6 +22,9 @@ function App() {
 
   return (
     <div>
+      <OpenSeadragonViewer tileSource={tileSource} />
+      {/* <div id="minimap-navigator"></div> */}
+
       <Input
         onChange={(e) => setInputValue(e.target.value)}
         defaultValue="Combine input and button"
@@ -29,7 +32,6 @@ function App() {
       <Button onClick={handleChange} type="primary">
         Submit
       </Button>
-      <OpenSeadragonViewer tileSource={tileSource} />
     </div>
   );
 }
