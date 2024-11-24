@@ -1,6 +1,6 @@
 .size-indicator-div {
   position: absolute;
-  bottom: 0;
+  bottom: 100px;
   right: 0;
   text-align: center;
   background-color: black;

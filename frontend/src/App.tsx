@@ -49,7 +49,7 @@ function App() {
           backendData
             ? "http://93.183.82.224:3000/images/download-file/" +
               backendData.dziKey
-            : "https://openseadragon.github.io/example-images/duomo/duomo.dzi"
+            : "http://93.183.82.224:3000/images/download-file/tiles/1732317524428_56e1b23c0a41492db6dd0bec62c478b7/1732317524428_56e1b23c0a41492db6dd0bec62c478b7.dzi"
         }
         zoom={backendData ? backendData.viewportZoom : 0}
         x={backendData ? backendData.viewportX : 0}
@@ -68,6 +68,7 @@ function App() {
       {/* <div id="minimap-navigator"></div> */}
 
       <SizeIndicator val={100} />
+
       {/* <Input
         onChange={(e) => setInputValue(e.target.value)}
         defaultValue="Combine input and button"

@@ -1,6 +1,7 @@
 import axios from "axios";
 import styles from "./Menu.module.scss"; // Подключите файл CSS
 import { createContext, useContext } from "react";
+import { Button } from "antd";
 
 const Menu = ({ handleDataFromBackend, handleDataToBackend, coords }) => {
   const ScreenshotsContext = createContext();
@@ -37,9 +38,9 @@ const Menu = ({ handleDataFromBackend, handleDataToBackend, coords }) => {
   return (
     <div className={styles.menu}>
       {/* <div id="toolbar-container"></div> */}
-      <button onClick={handleClick}>All files</button>
-      <button onClick={createScreenshot}>Make a Screenshot</button>
-      <button>Comment</button>
+      <Button onClick={handleClick}>All files</Button>
+      <Button onClick={createScreenshot}>Make a Screenshot</Button>
+      <Button>Comment</Button>
     </div>
   );
 };

@@ -30,33 +30,33 @@ const OpenSeadragonViewer = (props: TileType) => {
         // toolbar: "toolbar-container",
         // navigatorContainer: navigatorRef.current,
         navigatorContainer: "navigator-container",
-        // prefixUrl: "./src/assets/icons/",
-        // navImages: {
-        //   zoomIn: {
-        //     REST: "zoomin_rest.svg",
-        //     GROUP: "zoomin_hover.svg",
-        //     HOVER: "zoomin_hover.svg",
-        //     DOWN: "zoomin_down.svg",
-        //   },
-        //   zoomOut: {
-        //     REST: "zoom_out_rest.svg",
-        //     GROUP: "zoom_out_hover.svg",
-        //     HOVER: "zoom_out_hover.svg",
-        //     DOWN: "zoom_out_down.svg",
-        //   },
-        //   home: {
-        //     REST: "home_rest.svg",
-        //     GROUP: "home_hover.svg",
-        //     HOVER: "home_hover.svg",
-        //     DOWN: "home_down.svg",
-        //   },
-        //   fullpage: {
-        //     REST: "fullpage_rest.svg",
-        //     GROUP: "fullpage_hover.svg",
-        //     HOVER: "fullpage_hover.svg",
-        //     DOWN: "fullpage_down.svg",
-        //   },
-        // },
+        prefixUrl: "./src/assets/icons/",
+        navImages: {
+          zoomIn: {
+            REST: "zoomin_rest.svg",
+            GROUP: "zoomin_hover.svg",
+            HOVER: "zoomin_hover.svg",
+            DOWN: "zoomin_down.svg",
+          },
+          zoomOut: {
+            REST: "zoom_out_rest.svg",
+            GROUP: "zoom_out_hover.svg",
+            HOVER: "zoom_out_hover.svg",
+            DOWN: "zoom_out_down.svg",
+          },
+          home: {
+            REST: "home_rest.svg",
+            GROUP: "home_hover.svg",
+            HOVER: "home_hover.svg",
+            DOWN: "home_down.svg",
+          },
+          fullpage: {
+            REST: "fullpage_rest.svg",
+            GROUP: "fullpage_hover.svg",
+            HOVER: "fullpage_hover.svg",
+            DOWN: "fullpage_down.svg",
+          },
+        },
       });
     } else if (viewerInstanceRef.current) {
       //       // Если Viewer уже инициализирован, обновляем его source
@@ -144,24 +144,24 @@ const OpenSeadragonViewer = (props: TileType) => {
     // );
 
     // useEffect(() => {
-    if (flag) {
-      const currentZoom = viewerInstanceRef.current.viewport.getZoom();
-      function generateUniqueName(prefix = "item") {
-        const timestamp = Date.now(); // Возвращает время в миллисекундах с 1970 года
-        return `${prefix}_${timestamp}`;
-      }
+    // if (flag) {
+    const currentZoom = viewerInstanceRef.current.viewport.getZoom();
+    // function generateUniqueName(prefix = "item") {
+    //   const timestamp = Date.now(); // Возвращает время в миллисекундах с 1970 года
+    //   return `${prefix}_${timestamp}`;
+    // }
 
-      console.log(generateUniqueName()); // Пример: item_1700821834231
+    //console.log(generateUniqueName()); // Пример: item_1700821834231
 
-      const requestData = {
-        x: currentCenter.x,
-        y: currentCenter.y,
-        zoom: currentZoom,
-        dziKey: tileSource,
-        originalName: generateUniqueName,
-      };
-      handlerCoords(requestData);
-    }
+    const requestData = {
+      x: currentCenter.x,
+      y: currentCenter.y,
+      zoom: currentZoom,
+      dziKey: tileSource,
+      originalName: "item_" + Date.now(),
+    };
+    handlerCoords(requestData);
+    // }
     // console.log("Current Zoom Level:", currentZoom);
     // const sendTo = async () => {
     //   try {
