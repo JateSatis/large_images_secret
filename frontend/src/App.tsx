@@ -4,8 +4,7 @@ import OpenSeadragonViewer from "./Viewer";
 import { useState } from "react";
 import { Sidebar } from "./widgets/Sidebar/Sidebar";
 import Menu from "./widgets/Menu/Menu";
-import { Sidebar } from "./widgets/Sidebar";
-import SizeIndicator from "./sizeIndicator";
+import SizeIndicator from "./SizeIndicator";
 
 function App() {
   // const tileSource =
@@ -69,7 +68,7 @@ function App() {
       {/* <div id="minimap-navigator"></div> */}
 
       <SizeIndicator val={100} />
-      <Input
+      {/* <Input
         onChange={(e) => setInputValue(e.target.value)}
         defaultValue="Combine input and button"
       />

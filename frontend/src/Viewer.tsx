@@ -151,7 +151,7 @@ const OpenSeadragonViewer = (props: TileType) => {
         'y': currentCenter.y,
         'zoom': currentZoom,
         'dziKey': tileSource,
-        'originalName':
+        // 'originalName':
       };
       handlerCoords(requestData);
     }
