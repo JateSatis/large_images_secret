@@ -10,6 +10,9 @@ import { processImage } from "./processImage";
 import { downloadDzi } from "./downloadDzi";
 import { downloadTile } from "./downloadTile";
 import { getImagesInfo } from "./getImagesInfo";
+import { createFolder } from "./fileSystem/createFolder";
+import { getFolder } from "./fileSystem/getFolder";
+import { getFileStructure } from "./fileSystem/getFileStructure";
 
 dotenv.config();
 
@@ -55,3 +58,9 @@ imageRouter.get(
 );
 
 imageRouter.get("/getImagesInfo", getImagesInfo);
+
+imageRouter.post("/create-folder", createFolder);
+
+imageRouter.get("/get-folder", getFolder);
+
+imageRouter.get("/get-file-structure", getFileStructure);

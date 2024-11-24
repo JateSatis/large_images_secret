@@ -14,7 +14,7 @@ export const prisma = new PrismaClient({
 });
 
 export async function connectWithRetry() {
-  const maxRetries = 10; // Maximum number of retries
+  const maxRetries = 100; // Maximum number of retries
   const retryDelay = 5000; // Delay between retries in milliseconds (5 seconds)
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
@@ -37,6 +37,3 @@ export async function connectWithRetry() {
     }
   }
 }
-
-// Initialize the database connection with retry mechanism
-// connectWithRetry();

@@ -8,9 +8,42 @@ import { prisma } from "../config/postgresConfig";
 
 dotenv.config();
 
+type ImageInfo = {
+  originalName: string;
+  dziKey: string;
+};
+
 export const processImage = async (req: Request, res: Response) => {
+  const requestBody = req.body;
+
+  if (!requestBody) {
+    res.sendStatus(400);
+    return;
+  }
+
+  const parentPath = requestBody.path;
+
+  const folder = await prisma.folder.findFirst({
+    where: {
+      path: parentPath,
+    },
+  });
+
   const pathToFile = path.join(__dirname, "../large_image.jpg");
-  await divideImageToTiles(pathToFile, "processed_image");
+  const imageInfo: ImageInfo = await divideImageToTiles(
+    pathToFile,
+    "processed_image"
+  );
+
+  await prisma.image.create({
+    data: {
+      dziKey: imageInfo.dziKey,
+      name: imageInfo.originalName,
+      folderId: folder?.id,
+      path: `${parentPath}/${imageInfo.originalName}`,
+    },
+  });
+
   res.sendStatus(200);
 };
 
@@ -65,13 +98,11 @@ const divideImageToTiles = async (filePath: string, fileName: string) => {
   const baseTileKey = `tiles/${fileName}/${fileName}_files`;
   await uploadTiles(tilesDir, baseTileKey);
 
-  await prisma.image.create({
-    data: {
-      originalName,
-      dziKey,
-    },
-  });
-
   // Очистка временной директории
   fs.rmSync(outputDir, { recursive: true, force: true });
+
+  return {
+    originalName,
+    dziKey,
+  };
 };

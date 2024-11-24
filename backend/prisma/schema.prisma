@@ -7,10 +7,31 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Comment {
+  id        Int    @id @default(autoincrement())
+  text      String @unique
+  dziKey    String @unique
+  viewportX Float? // Начальная X-координата viewport
+  viewportY Float? // Начальная Y-координата viewport
+}
+
+model Folder {
+  id       Int      @id @default(autoincrement())
+  name     String
+  path     String   @unique // Уникальное имя папки
+  parentId Int? // ID родительской папки, если есть
+  parent   Folder?  @relation("ParentFolder", fields: [parentId], references: [id]) // Связь с родительской папкой
+  children Folder[] @relation("ParentFolder") // Связь с дочерними папками
+  images   Image[] // Связь с изображениями
+}
+
 model Image {
-  id           Int    @id @default(autoincrement())
-  originalName String @unique
-  dziKey       String @unique
+  id       Int     @id @default(autoincrement())
+  name     String
+  path     String  @unique
+  dziKey   String  @unique
+  folderId Int? // ID папки, в которой хранится изображение
+  folder   Folder? @relation(fields: [folderId], references: [id])
 }
 
 model Screenshot {
