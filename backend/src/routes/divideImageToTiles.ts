@@ -3,77 +3,39 @@ import fs from "fs";
 import path from "path";
 import * as dotenv from "dotenv";
 import { S3DataSource } from "../config/s3Config";
-import { Request, Response } from "express";
-import { prisma } from "../config/postgresConfig";
 
 dotenv.config();
 
-type ImageInfo = {
-  originalName: string;
-  dziKey: string;
-};
-
-export const processImage = async (req: Request, res: Response) => {
-  const requestBody = req.body;
-
-  if (!requestBody) {
-    res.sendStatus(400);
-    return;
-  }
-
-  const parentPath = requestBody.path;
-
-  const folder = await prisma.folder.findFirst({
-    where: {
-      path: parentPath,
-    },
-  });
-
-  const pathToFile = path.join(__dirname, "../large_image.jpg");
-  const imageInfo: ImageInfo = await divideImageToTiles(
-    pathToFile,
-    "processed_image"
-  );
-
-  await prisma.image.create({
-    data: {
-      dziKey: imageInfo.dziKey,
-      name: imageInfo.originalName,
-      folderId: folder?.id,
-      path: `${parentPath}/${imageInfo.originalName}`,
-    },
-  });
-
-  res.sendStatus(200);
-};
-
-const divideImageToTiles = async (filePath: string, fileName: string) => {
-  const originalName = fileName;
+export const divideImageToTiles = async (
+  fileBuffer: Buffer<ArrayBufferLike>,
+  fileName: string
+) => {
   fileName = S3DataSource.generateUniqueImageName();
   const outputDir = path.join(__dirname, "../temp_tiles"); // Временная директория для хранения тайлов
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir);
   }
 
-  console.log(fileName);
-
   const dziFilePath = path.join(outputDir, `${fileName}`);
+
+  console.log("Image is being tiled");
 
   // Увеличение лимита на количество пикселей (например, до 1 миллиарда)
   sharp.concurrency(4); // Оптимизация использования CPU
   sharp.cache({ items: 100, memory: 1024, files: 20 }); // Увеличение лимитов кеша
   // Генерация тайлов
-  await sharp(filePath, { limitInputPixels: 1e10 })
+  await sharp(fileBuffer, { limitInputPixels: 1e10 })
     .tile({
       size: 1080, // Размер тайлов
       layout: "dz", // Структура Deep Zoom
-      overlap: 2, // Наложение между тайлами
+			overlap: 2, // Наложение между тайлами
     })
     .toFile(dziFilePath);
 
+  console.log("Image is being uploaded to S3");
+
   // Загрузка .dzi файла в S3
   const dziKey = `tiles/${fileName}/${fileName}.dzi`;
-  console.log(dziKey);
   const dziContent = fs.readFileSync(`${dziFilePath}.dzi`);
   await S3DataSource.uploadImageToS3(dziKey, dziContent, "application/xml");
 
@@ -101,8 +63,5 @@ const divideImageToTiles = async (filePath: string, fileName: string) => {
   // Очистка временной директории
   fs.rmSync(outputDir, { recursive: true, force: true });
 
-  return {
-    originalName,
-    dziKey,
-  };
+  return dziKey;
 };

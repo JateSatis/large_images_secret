@@ -11,11 +11,22 @@ export const getFolder = async (req: Request, res: Response) => {
 
   const path = requestBody.path;
 
-  const folder = await prisma.folder.findFirst({
-    where: {
-      path,
-    },
-  });
+  if (!path) {
+    res.status(400).json({
+      name: "Path not provided",
+    });
+  }
+
+  let folder;
+  try {
+    folder = await prisma.folder.findFirst({
+      where: {
+        path,
+      },
+    });
+  } catch (error) {
+    res.status(500).json(error);
+  }
 
   res.status(200).json(folder);
 };

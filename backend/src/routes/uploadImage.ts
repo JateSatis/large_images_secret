@@ -1,12 +1,11 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import path from "path";
 import { Server, Upload } from "@tus/server";
 import { FileStore } from "@tus/file-store";
 import * as dotenv from "dotenv";
 import { IncomingMessage, ServerResponse } from "http";
 import fs from "fs";
-import { S3DataSource } from "../config/s3Config";
-import { processImage } from "./processImage";
+import { divideImageToTiles } from "./divideImageToTiles";
 import { downloadDzi } from "./downloadDzi";
 import { downloadTile } from "./downloadTile";
 import { getImagesInfo } from "./getImagesInfo";
@@ -17,6 +16,8 @@ import { createScreenshot } from "./fileSystem/createScreenshot";
 import { getScreenshots } from "./fileSystem/getScreenshots";
 import { createComment } from "./fileSystem/createComment";
 import { getComments } from "./fileSystem/getComments";
+import { handleFile } from "./handleFIleMiddleware";
+import { prisma } from "../config/postgresConfig";
 
 dotenv.config();
 
@@ -35,24 +36,60 @@ const tusServer = new Server({
   ): Promise<ServerResponse<IncomingMessage>> => {
     const metadata = upload.metadata;
 
+    const parentPath = metadata!!.parentPath!!;
     const imageName = metadata!!.filename!!;
-    const filetype = metadata!!.filetype!!;
 
     const filePath = upload.storage?.path!!;
     const imageBuffer = fs.readFileSync(filePath);
 
-    S3DataSource.uploadImageToS3(imageName, imageBuffer, filetype);
+    const exisitingImage = await prisma.image.findFirst({
+      where: {
+        path: `${parentPath}/${imageName}`,
+      },
+    });
+
+    if (exisitingImage) {
+      return res;
+    }
+
+    const folder = await prisma.folder.findFirst({
+      where: {
+        path: parentPath,
+      },
+    });
+
+    if (!folder) {
+      return res;
+    }
+
+    const dziKey = await divideImageToTiles(imageBuffer, imageName);
+
+    let createdImage;
+    try {
+      createdImage = await prisma.image.create({
+        data: {
+          dziKey: dziKey,
+          name: imageName,
+          folderId: folder?.id,
+          path: `${parentPath}/${imageName}`,
+        },
+      });
+    } catch (error) {
+      return res;
+    }
+
+    console.log(JSON.stringify(createdImage));
 
     return res;
   },
 });
 
 // Route all Tus-related requests (POST, PATCH, HEAD, etc.) to the Tus server
-imageRouter.post("/upload-image", tusServer.handle.bind(tusServer));
+imageRouter.post("/upload-image", async (req: Request, res: Response) => {
+  tusServer.handle.bind(tusServer)(req, res);
+});
 
 imageRouter.all("/upload-image/*", tusServer.handle.bind(tusServer));
-
-imageRouter.get("/process-image", processImage);
 
 imageRouter.get("/download-file/tiles/:fileName/:dziFileName", downloadDzi);
 

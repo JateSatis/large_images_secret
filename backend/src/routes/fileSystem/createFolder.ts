@@ -4,10 +4,14 @@ import { prisma } from "../../config/postgresConfig";
 export const createFolder = async (req: Request, res: Response) => {
   const requestBody = req.body;
 
-  console.log(JSON.stringify(requestBody));
-
   const parentPath: string | null = requestBody.parentPath;
   const name: string = requestBody.name;
+
+  if (!name) {
+    res.status(400).json({
+      message: "Name of the folder not provided",
+    });
+  }
 
   let parent = null;
   if (parentPath) {
@@ -27,13 +31,18 @@ export const createFolder = async (req: Request, res: Response) => {
     path = name;
   }
 
-  const folder = await prisma.folder.create({
-    data: {
-      parentId,
-      name: name,
-      path,
-    },
-  });
+  let folder;
+  try {
+    folder = await prisma.folder.create({
+      data: {
+        parentId,
+        name: name,
+        path,
+      },
+    });
+  } catch (error) {
+    res.status(400).json(error);
+  }
 
   res.status(200).json(folder);
 };
