@@ -6,7 +6,7 @@ export const downloadTile = async (req: Request, res: Response) => {
   const fileName = req.params.fileName;
   const directoryName = req.params.directoryName;
   const tileLevel = req.params.tileLevel;
-  const tileName = req.params.tileName.split(".")[0] + ".webp";
+  const tileName = req.params.tileName;
   const key = `tiles/${fileName}/${directoryName}/${tileLevel}/${tileName}`;
 
   console.log(key);
