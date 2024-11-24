@@ -1,7 +1,6 @@
 const tus = require("tus-js-client");
 const fs = require("fs");
 
-// Function to send the image file using Tus
 const sendImageWithTus = (filePath, serverUrl) => {
   const fileStream = fs.createReadStream(filePath);
   const stats = fs.statSync(filePath);
@@ -11,11 +10,11 @@ const sendImageWithTus = (filePath, serverUrl) => {
   const upload = new tus.Upload(fileStream, {
     endpoint: serverUrl,
     // chunkSize: Math.ceil(stats.size),
-    retryDelays: [0, 1000, 3000, 5000], // Retry delays
+    retryDelays: [0, 1000, 3000, 5000],
     metadata: {
       filename: filePath.split("/").pop(),
-      filetype: "image/tif", // Adjust based on the actual file type
-      parentPath: "root/images",
+      filetype: "image/png",
+      parentPath: "root",
     },
     uploadSize: stats.size,
     onError: (error) => {
@@ -34,7 +33,6 @@ const sendImageWithTus = (filePath, serverUrl) => {
   upload.start();
 };
 
-// Example usage
-const filePath = "./1.tif"; // Path to your image file
-const serverUrl = "http://localhost:3000/images/upload-image"; // Tus server endpoint
+const filePath = "./image_1_level_1.png";
+const serverUrl = "http://localhost:3000/images/upload-image";
 sendImageWithTus(filePath, serverUrl);

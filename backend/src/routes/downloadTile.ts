@@ -18,14 +18,12 @@ export const downloadTile = async (req: Request, res: Response) => {
       return;
     }
 
-    // Set headers for file download
     res.setHeader(
       "Content-Disposition",
       `attachment; filename="${key.split("/").pop()}"`
     );
-    res.setHeader("Content-Type", "application/octet-stream"); // Or you can use the appropriate mime type
+    res.setHeader("Content-Type", "application/octet-stream");
 
-    // Pipe the S3 object stream to the client response
     const stream = response.Body as Readable;
     stream.pipe(res);
 

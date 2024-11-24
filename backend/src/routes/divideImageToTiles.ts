@@ -11,7 +11,7 @@ export const divideImageToTiles = async (
   fileName: string
 ) => {
   fileName = S3DataSource.generateUniqueImageName();
-  const outputDir = path.join(__dirname, "../temp_tiles"); // Временная директория для хранения тайлов
+  const outputDir = path.join(__dirname, "../temp_tiles");
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir);
   }
@@ -20,15 +20,13 @@ export const divideImageToTiles = async (
 
   console.log("Image is being tiled");
 
-  // Увеличение лимита на количество пикселей (например, до 1 миллиарда)
-  sharp.concurrency(4); // Оптимизация использования CPU
-  sharp.cache({ items: 100, memory: 1024, files: 20 }); // Увеличение лимитов кеша
+  sharp.cache({ items: 100, memory: 1024, files: 20 });
   // Генерация тайлов
   await sharp(fileBuffer, { limitInputPixels: 1e10 })
     .tile({
-      size: 1080, // Размер тайлов
-      layout: "dz", // Структура Deep Zoom
-			overlap: 2, // Наложение между тайлами
+      size: 1080,
+      layout: "dz",
+			overlap: 2,
     })
     .toFile(dziFilePath);
 

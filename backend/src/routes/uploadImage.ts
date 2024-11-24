@@ -23,11 +23,10 @@ dotenv.config();
 
 export const imageRouter = Router();
 
-// Create a new Tus server
 const tusServer = new Server({
-  path: "/images/upload-image", // This is the base path for Tus requests
+  path: "/images/upload-image",
   datastore: new FileStore({
-    directory: path.join(__dirname, "../uploads"), // Directory to store uploaded files
+    directory: path.join(__dirname, "../uploads"),
   }),
   onUploadFinish: async (
     req: IncomingMessage,
@@ -84,7 +83,6 @@ const tusServer = new Server({
   },
 });
 
-// Route all Tus-related requests (POST, PATCH, HEAD, etc.) to the Tus server
 imageRouter.post("/upload-image", async (req: Request, res: Response) => {
   tusServer.handle.bind(tusServer)(req, res);
 });

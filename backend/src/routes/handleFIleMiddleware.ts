@@ -6,7 +6,6 @@ const fileFilter = (
   file: Express.Multer.File,
   cb: FileFilterCallback
 ) => {
-  // Define allowed mime types
   const allowedTypes = [
     "image/tif",
     "image/png",
@@ -15,7 +14,6 @@ const fileFilter = (
     "image/webp",
   ];
 
-  // Check if file type is valid
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {

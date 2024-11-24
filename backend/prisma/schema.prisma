@@ -37,7 +37,7 @@ model Image {
 model Screenshot {
   id           Int    @id @default(autoincrement())
   originalName String @unique
-  dziKey       String @unique
+  dziKey       String
   viewportX    Float? // Начальная X-координата viewport
   viewportY    Float? // Начальная Y-координата viewport
   viewportZoom Float? // Начальный уровень зума для viewport
