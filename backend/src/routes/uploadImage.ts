@@ -13,6 +13,10 @@ import { getImagesInfo } from "./getImagesInfo";
 import { createFolder } from "./fileSystem/createFolder";
 import { getFolder } from "./fileSystem/getFolder";
 import { getFileStructure } from "./fileSystem/getFileStructure";
+import { createScreenshot } from "./fileSystem/createScreenshot";
+import { getScreenshots } from "./fileSystem/getScreenshots";
+import { createComment } from "./fileSystem/createComment";
+import { getComments } from "./fileSystem/getComments";
 
 dotenv.config();
 
@@ -64,3 +68,11 @@ imageRouter.post("/create-folder", createFolder);
 imageRouter.get("/get-folder", getFolder);
 
 imageRouter.get("/get-file-structure", getFileStructure);
+
+imageRouter.post("/create-screenshot", createScreenshot);
+
+imageRouter.get("/get-screenshots", getScreenshots);
+
+imageRouter.post("/create-comment", createComment);
+
+imageRouter.post("/get-comments", getComments);
