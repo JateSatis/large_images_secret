@@ -5,94 +5,113 @@
 .viewerContainer {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 90vh;
 
   .openseadragonCanvas {
     width: 100%;
     height: 100%;
   }
 
-  .viewerOverlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
+  // .viewerOverlay {
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0;
+  //   width: 100%;
+  //   height: 100%;
+  //   pointer-events: none;
 
-    .sidebar {
-      position: absolute;
-      right: 0;
-      top: 0;
-      width: 20%; /* Сайдбар занимает 20% ширины */
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.8);
-      color: white;
-      padding: 10px;
-      box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
-      pointer-events: all;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+  //   .menu {
+  //     // position: fixed;
+  //     width: 100%;
+  //     height: 100%;
+  //     background-color: #000;
+  //     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  //     padding: 10px 20px;
+  //     display: flex;
+  //     justify-content: space-around;
+  //     align-items: center;
+  //     z-index: 1000;
+  //   }
 
-      .navigator {
-        width: 100%; /* Миникарта занимает всю ширину сайдбара */
-        height: 150px; /* Высота миникарты */
-        background-color: #222; /* Фон, если карта не загружена */
-        margin-bottom: 10px; /* Отступ снизу */
-        border-radius: 4px;
-        overflow: hidden;
-      }
+  //   .sidebar {
+  //     position: absolute;
+  //     right: 0;
+  //     top: 150px;
+  //     width: 20%; /* Сайдбар занимает 20% ширины */
+  //     height: 100%;
+  //     background-color: rgba(0, 0, 0, 0.8);
+  //     color: white;
+  //     padding: 10px;
+  //     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+  //     pointer-events: all;
+  //     display: flex;
+  //     flex-direction: column;
+  //     gap: 10px;
 
-      button {
-        background-color: #444;
-        color: white;
-        border: none;
-        padding: 10px;
-        border-radius: 4px;
-        cursor: pointer;
+  //     .navigator {
+  //       width: 100%; /* Миникарта занимает всю ширину сайдбара */
+  //       height: 150px; /* Высота миникарты */
+  //       background-color: #222; /* Фон, если карта не загружена */
+  //       margin-bottom: 10px; /* Отступ снизу */
+  //       border-radius: 4px;
+  //       overflow: hidden;
+  //       opacity: 0;
+  //     }
 
-        &:hover {
-          background-color: #555;
-        }
-      }
+  //     #toolbar-container button svg {
+  //       width: 16px; /* Уменьшить ширину изображения */
+  //       height: 16px; /* Уменьшить высоту изображения */
+  //     }
 
-      .zoomInfo {
-        text-align: center;
-        font-size: 1.2em;
-        margin: 10px 0;
-      }
+  //     button {
+  //       background-color: #444;
+  //       color: white;
+  //       border: none;
+  //       padding: 10px;
+  //       border-radius: 4px;
+  //       cursor: pointer;
 
-      hr {
-        border: 0;
-        border-top: 1px solid #666;
-      }
+  //       &:hover {
+  //         background-color: #555;
+  //       }
+  //     }
 
-      .actions {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
+  //     .zoomInfo {
+  //       text-align: center;
+  //       font-size: 1.2em;
+  //       margin: 10px 0;
+  //     }
 
-        div {
-          background-color: #333;
-          padding: 10px;
-          border-radius: 4px;
-          text-align: center;
-        }
+  //     hr {
+  //       border: 0;
+  //       border-top: 1px solid #666;
+  //     }
 
-        .curveInfo {
-          margin-top: 20px;
-          font-size: 0.9em;
-          text-align: center;
-        }
+  //     .actions {
+  //       display: flex;
+  //       flex-direction: column;
+  //       gap: 10px;
 
-        .curveGraph {
-          width: 100%;
-          height: 100px;
-          background-color: #222;
-          border-radius: 4px;
-        }
-      }
-    }
-  }
+  //       div {
+  //         background-color: #333;
+  //         padding: 10px;
+  //         border-radius: 4px;
+  //         text-align: center;
+  //       }
+
+  //       .curveInfo {
+  //         margin-top: 20px;
+  //         font-size: 0.9em;
+  //         text-align: center;
+  //       }
+
+  //       .curveGraph {
+  //         width: 100%;
+  //         height: 100px;
+  //         background-color: #222;
+  //         border-radius: 4px;
+  //       }
+  //     }
+  //   }
+  // }
 }
