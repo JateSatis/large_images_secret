@@ -146,12 +146,19 @@ const OpenSeadragonViewer = (props: TileType) => {
     // useEffect(() => {
     if (flag) {
       const currentZoom = viewerInstanceRef.current.viewport.getZoom();
+      function generateUniqueName(prefix = "item") {
+        const timestamp = Date.now(); // Возвращает время в миллисекундах с 1970 года
+        return `${prefix}_${timestamp}`;
+      }
+
+      console.log(generateUniqueName()); // Пример: item_1700821834231
+
       const requestData = {
-        'x': currentCenter.x,
-        'y': currentCenter.y,
-        'zoom': currentZoom,
-        'dziKey': tileSource,
-        // 'originalName':
+        x: currentCenter.x,
+        y: currentCenter.y,
+        zoom: currentZoom,
+        dziKey: tileSource,
+        originalName: generateUniqueName,
       };
       handlerCoords(requestData);
     }
