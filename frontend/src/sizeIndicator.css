@@ -1,0 +1,61 @@
+.size-indicator-div {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  text-align: center;
+  background-color: black;
+  opacity: 0.72;
+  width: 267px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 26px;
+  padding-top: 20px;
+}
+
+.size-indicator-text {
+  color: white;
+}
+
+.comment-main-div {
+  background-color: black;
+  width: fit-content;
+  height: fit-content;
+
+  border-radius: 40px 40px 40px 0;
+  padding: 17px;
+  opacity: 0.72;
+  max-width: 400px;
+
+  word-wrap: break-word; /* Перенос длинных слов */
+  overflow-wrap: break-word; /* Современный стандарт */
+  white-space: normal;
+}
+
+.comment-sub-div {
+  padding-top: 20px;
+  background-color: gray;
+}
+
+.comment-icon {
+  width: 54px;
+  height: 54;
+}
+
+.comment-description {
+  font-size: 20px;
+  color: white;
+  display: flex;
+  align-items: center;
+  word-wrap: break-word; /* Перенос длинных слов */
+  overflow-wrap: break-word; /* Современный стандарт */
+  white-space: normal;
+  line-height: 1.5;
+}
+
+.comment-title {
+  padding-left: 20px;
+  font-size: 40px;
+  color: white;
+}
