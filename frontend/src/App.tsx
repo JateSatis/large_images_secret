@@ -2,6 +2,7 @@ import { Button, Input } from "antd";
 
 import OpenSeadragonViewer from "./Viewer";
 import { useState } from "react";
+import { Sidebar } from "./widgets/Sidebar";
 
 function App() {
   // const tileSource =
@@ -32,6 +33,7 @@ function App() {
       <Button onClick={handleChange} type="primary">
         Submit
       </Button>
+      <Sidebar />
     </div>
   );
 }
