@@ -4,16 +4,18 @@ import path from "path";
 import * as dotenv from "dotenv";
 import { S3DataSource } from "../config/s3Config";
 import { Request, Response } from "express";
+import { prisma } from "../config/postgresConfig";
 
 dotenv.config();
 
 export const processImage = async (req: Request, res: Response) => {
-  const pathToFile = path.join(__dirname, "../1.tif");
+  const pathToFile = path.join(__dirname, "../large_image.jpg");
   await divideImageToTiles(pathToFile, "processed_image");
   res.sendStatus(200);
 };
 
 const divideImageToTiles = async (filePath: string, fileName: string) => {
+  const originalName = fileName;
   fileName = S3DataSource.generateUniqueImageName();
   const outputDir = path.join(__dirname, "../temp_tiles"); // Временная директория для хранения тайлов
   if (!fs.existsSync(outputDir)) {
@@ -54,7 +56,7 @@ const divideImageToTiles = async (filePath: string, fileName: string) => {
       } else {
         const tileKey = `${baseKey}/${file}`;
         const tileContent = fs.readFileSync(fullPath);
-        await S3DataSource.uploadImageToS3(tileKey, tileContent, "image.jpeg");
+        await S3DataSource.uploadImageToS3(tileKey, tileContent, "image/jpeg");
       }
     }
   };
@@ -63,6 +65,13 @@ const divideImageToTiles = async (filePath: string, fileName: string) => {
   const baseTileKey = `tiles/${fileName}/${fileName}_files`;
   await uploadTiles(tilesDir, baseTileKey);
 
+  await prisma.image.create({
+    data: {
+      originalName,
+      dziKey,
+    },
+  });
+
   // Очистка временной директории
-  // fs.rmSync(outputDir, { recursive: true, force: true });
+  fs.rmSync(outputDir, { recursive: true, force: true });
 };

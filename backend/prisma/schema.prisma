@@ -1,0 +1,23 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Image {
+  id           Int    @id @default(autoincrement())
+  originalName String @unique
+  dziKey       String @unique
+}
+
+model Screenshot {
+  id           Int    @id @default(autoincrement())
+  originalName String @unique
+  dziKey       String @unique
+  viewportX    Float? // Начальная X-координата viewport
+  viewportY    Float? // Начальная Y-координата viewport
+  viewportZoom Float? // Начальный уровень зума для viewport
+}

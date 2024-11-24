@@ -9,6 +9,7 @@ import { S3DataSource } from "../config/s3Config";
 import { processImage } from "./processImage";
 import { downloadDzi } from "./downloadDzi";
 import { downloadTile } from "./downloadTile";
+import { getImagesInfo } from "./getImagesInfo";
 
 dotenv.config();
 
@@ -52,3 +53,5 @@ imageRouter.get(
   "/download-file/tiles/:fileName/:directoryName/:tileLevel/:tileName",
   downloadTile
 );
+
+imageRouter.get("/getImagesInfo", getImagesInfo);
